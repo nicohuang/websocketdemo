@@ -1,5 +1,6 @@
 var app = angular.module('App', []);
 //主界面控制器
+
 app.controller('SendController', function ($scope, $http)
 {
     //获取列表数据
@@ -29,43 +30,107 @@ app.controller('SendController', function ($scope, $http)
             });
     };
 
+    $scope.select = function(user)
+    {
+        $scope.username = user;
+    }
 });
-//var userList = {};
+
+//app.directive("runoobDirective", function() {
+//    return {
+//        controller:[ "$scope", function ($scope) {
+//            $scope.users = ['a','b'];
+//            $scope.userList = ["555","bbb"];
+//        }],
+//        template : "<h1>{{users | json}}</h1>"
+//    };
+//});
+
+//app.directive("runoobDirective", function ()
+//{
+//    var websocket = null;
+//    if (window['WebSocket'])
+//    // ws://host:port/project/websocketpath
+//        websocket = new WebSocket("ws://" + window.location.host + '/websocket');
+//    else
+//        websocket = new new SockJS(PATH + '/websocket/socketjs');
+//
+//    websocket.onopen = function (event)
+//    {
+//        console.log('open', event);
+//    };
+//    websocket.onmessage = function (event)
+//    {
+//        console.log('message', event.data);
+//        var sort = angular.fromJson(event.data.toString());
+//        if (sort.type == 'message')
+//        {
+//            if (sort.username == sort.sender)
+//            {
+//                return {
+//                    template: $('div[message] > ul').append('<li class="ul">'+sort.message + '</li>')
+//                };
+//            }
+//            return {
+//
+//                template: $('div[message] > ul').append('<li>' + '['+sort.sender+']'+sort.message + '</li>')
+//            };
+//        }
+//        else
+//        {
+//            return {
+//                controller:[ "$scope", function ($scope) {
+//                    $scope.users = ['a','b'];
+//                    $scope.userList = ["555","bbb"];
+//                }],
+//                template : "<h1>{{users | json}}</h1>"
+//            };
+//
+//        }
+//    };
+//});
+
 app.directive("runoobDirective", function ()
 {
-    var websocket = null;
-    if (window['WebSocket'])
-    // ws://host:port/project/websocketpath
-        websocket = new WebSocket("ws://" + window.location.host + '/websocket');
-    else
-        websocket = new new SockJS(PATH + '/websocket/socketjs');
+    return {
+        controller: ["$scope", function ($scope)
+        {
+            var websocket = null;
+            if (window['WebSocket'])
+            // ws://host:port/project/websocketpath
+                websocket = new WebSocket("ws://" + window.location.host + '/websocket');
+            else
+                websocket = new new SockJS(PATH + '/websocket/socketjs');
 
-    websocket.onopen = function (event)
-    {
-        console.log('open', event);
-    };
-    websocket.onmessage = function (event)
-    {
-        console.log('message', event.data);
-        var sort = angular.fromJson(event.data.toString());
-        if (sort.type == 'message')
-        {
-            if (sort.username == sort.sender)
+            websocket.onopen = function (event)
             {
-                return {
-                    template: $('div[message] > ul').append('<li class="ul">'+sort.message + '</li>')
-                };
-            }
-            return {
-                template: $('div[message] > ul').append('<li>' + '['+sort.sender+']'+sort.message + '</li>')
+                console.log('open', event);
             };
-        }
-        else
-        {
-            return {
-                template: $('div[message2]').html('<li>' +sort.users + '</li>')
+            websocket.onmessage = function (event)
+            {
+                console.log('message', event.data);
+                var sort = angular.fromJson(event.data.toString());
+                if (sort.type == 'message')
+                {
+                    if (sort.username == sort.sender)
+                    {
+                        return {
+                            template: $('div[message] > ul').append('<li class="ul">' + sort.message + '</li>')
+                        };
+                    }
+                    return {
+
+                        template: $('div[message] > ul').append('<li class="li">' + '[' + sort.sender + ']' + sort.message + '</li>')
+                    };
+                }
+                else
+                {
+                    $scope.userList = sort.users;
+                    $scope.$digest();
+                }
             };
-        }
+        }],
+        template: "<h1>{{users | json}}</h1>"
     };
 });
 

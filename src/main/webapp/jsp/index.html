@@ -22,58 +22,73 @@
             list-style-type: square;
         }
 
-        .ul {style-type:none;width:100%;text-align:right;}
-        .li {display:inline;}
+        .ul {
+            style-type: none;
+            width: 100%;
+            text-align: right;
+            list-style-type: none;
+        }
 
+        .li {
+            display: inline;
+            list-style-type: none;
+        }
+
+        #main {
+            width: 960px;
+            height: auto;
+        }
+
+        #left {
+            width: 800px;
+            height: 600px;
+        }
+
+        #right {
+            width: 800px;
+            height: 600px;
+            margin-left: 10px;
+        }
+
+        #left, #right {
+            float: left;
+        }
     </style>
     <script type="text/javascript" src="/static/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/static/sockjs.min.js"></script>
     <script type="text/javascript" src="/json.js"></script>
-    <!--<script type="text/javascript">-->
-        <!--var websocket = null;-->
-        <!--if (window['WebSocket'])-->
-        <!--// ws://host:port/project/websocketpath-->
-            <!--websocket = new WebSocket("ws://" + window.location.host + '/websocket');-->
-        <!--else-->
-            <!--websocket = new new SockJS(PATH + '/websocket/socketjs');-->
-
-        <!--websocket.onopen = function (event)-->
-        <!--{-->
-            <!--console.log('open', event);-->
-        <!--};-->
-        <!--websocket.onmessage = function (event)-->
-        <!--{-->
-            <!--console.log('message', event.data);-->
-            <!--$('div[message] > ul').append('<li>' + event.data + '</li>');-->
-        <!--};-->
-    <!--</script>-->
-
+    <script src="../angular.min.js"></script>
+    <script src="../controller.js"></script>
 </head>
 <body ng-app="App" ng-controller="SendController">
-<runoob-directive></runoob-directive>
-<div message>
-    <ul>
-    </ul>
-</div>
-<div message2>
-    <ul>
-    </ul>
-</div>
-<script src="../angular.min.js"></script>
-<script src="../controller.js"></script>
 
-<table>
-    <tr>
-        <td align="right">用户名:</td>
-        <td><input name="username" type="text" style="width: 300px;" ng-model="username"></td>
-    </tr>
-    <tr>
-        <td align="right">内容:</td>
-        <td><textarea name="message" style="width: 300px;" ng-model="message"></textarea></td>
-    </tr>
-    <tr>
-        <td colspan="2" align="center"><input type="button" ng-click="sendMessage()" value="send"/></td>
-    </tr>
-</table>
+<div id="main">
+    <div message id="left">
+        <ul>
+        </ul>
+    </div>
+    <div id="right">
+        <table>
+            <tr>
+                <td align="right">用户名:</td>
+                <td><input name="username" type="text" style="width: 300px;" ng-model="username"></td>
+            </tr>
+            <tr>
+                <td align="right">内容:</td>
+                <td><textarea name="message" style="width: 300px;" ng-model="message"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="button" ng-click="sendMessage()" value="send"/></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<ul>
+    <li ng-repeat="user in userList" class="li"><input type="button" ng-click="select(user)" value="{{user}}" ></li>
+</ul>
+
+<runoob-directive></runoob-directive>
+
 </body>
 </html>
